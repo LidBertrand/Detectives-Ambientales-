@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detectives Ambientales</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root {
+  --gd: #085041; --gm: #0F6E56; --gl: #1D9E75; --gp: #E1F5EE; --gb: #5DCAA5;
+  --s0: #f5f5f3; --s1: #fafaf8; --s2: #ffffff;
+  --tp: #1a1a18; --ts: #5c5c58; --tm: #9a9a94;
+  --b: rgba(0,0,0,0.1); --bs: rgba(0,0,0,0.18); --r: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --s0:#111110;--s1:#1a1a18;--s2:#242422;--tp:#e8e8e4;--ts:#a0a09a;--tm:#666660;--b:rgba(255,255,255,0.1);--bs:rgba(255,255,255,0.18);--gp:#0a2e24; }
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--s0);color:var(--tp);font-size:14px;line-height:1.5;height:100vh;overflow:hidden;}
+.scr{display:none;height:100vh;}
+.scr.on{display:flex;}
+/* LOGIN */
+#sl{align-items:center;justify-content:center;flex-direction:column;}
+.lcard{background:var(--s2);border:0.5px solid var(--bs);border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:420px;display:flex;flex-direction:column;gap:1.25rem;}
+.llogo{display:flex;align-items:center;gap:12px;}
+.lico{width:44px;height:44px;border-radius:12px;background:var(--gm);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.ltxt{font-size:18px;font-weight:600;color:var(--tp);}
+.lsub{font-size:12px;color:var(--tm);}
+.fi{display:flex;flex-direction:column;gap:5px;}
+.fi label{font-size:12px;font-weight:500;color:var(--ts);}
+.fi input,.fi textarea,.fi select{padding:8px 10px;border-radius:var(--r);border:0.5px solid var(--bs);background:var(--s1);color:var(--tp);font-size:13px;font-family:inherit;width:100%);}
+.fi input:focus,.fi textarea:focus,.fi select:focus{outline:none;border-color:var(--gl);}
+.fi textarea{resize:vertical;}
+.bp{background:var(--gm);color:#fff;border:none;border-radius:var(--r);padding:10px 16px;font-size:14px;font-weight:500;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;}
+.bp:hover{background:var(--gd);}
+.lnote{font-size:11px;color:var(--tm);text-align:center;line-height:1.6;padding:.75rem;background:var(--s1);border-radius:var(--r);border:0.5px solid var(--b);}
+.lhint{font-size:11px;color:var(--gm);text-align:center;}
+.lhint a{color:var(--gm);}
+/* MAIN */
+#sm{flex-direction:row;}
+/* SIDEBAR */
+.sb{width:252px;min-width:252px;background:var(--s1);border-right:0.5px solid var(--b);display:flex;flex-direction:column;}
+.sbh{padding:1rem;border-bottom:0.5px solid var(--b);}
+.logo{display:flex;align-items:center;gap:8px;margin-bottom:.75rem;}
+.lico2{width:30px;height:30px;border-radius:8px;background:var(--gm);display:flex;align-items:center;justify-content:center;font-size:15px;}
+.ln{font-size:13px;font-weight:600;}
+.lr{font-size:10px;color:var(--tm);}
+.mtabs{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--s0);border-radius:var(--r);padding:3px;}
+.mtab{padding:5px;border-radius:6px;border:none;background:transparent;cursor:pointer;font-size:11px;color:var(--tm);display:flex;align-items:center;justify-content:center;gap:4px;}
+.mtab.on{background:var(--s2);color:var(--tp);font-weight:500;}
+.sbs{flex:1;overflow-y:auto;padding:.75rem;}
+.slbl{font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.06em;padding:.5rem .25rem .35rem;}
+.ci{padding:.55rem .75rem;border-radius:var(--r);cursor:pointer;margin-bottom:2px;border:0.5px solid transparent;}
+.ci:hover{background:var(--s2);}
+.ci.on{background:var(--s2);border-color:var(--bs);}
+.cin{font-size:12px;font-weight:500;color:var(--tp);margin-bottom:2px;}
+.cim{font-size:10px;color:var(--tm);display:flex;align-items:center;gap:5px;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--gl);display:inline-block;}
+.badd{display:flex;align-items:center;gap:6px;padding:.55rem .75rem;border-radius:var(--r);border:0.5px dashed var(--bs);background:transparent;cursor:pointer;font-size:12px;color:var(--tm);width:100%;margin-top:4px;}
+.badd:hover{background:var(--s2);color:var(--tp);}
+.sbf{padding:.75rem 1rem;border-top:0.5px solid var(--b);font-size:10px;color:var(--tm);display:flex;align-items:center;gap:5px;}
+/* DOCENTE */
+#pd{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.tbar{padding:.875rem 1.25rem;border-bottom:0.5px solid var(--b);background:var(--s2);display:flex;align-items:center;justify-content:space-between;}
+.tt{font-size:15px;font-weight:500;}
+.ts2{font-size:11px;color:var(--tm);margin-top:1px;}
+.pb{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1.25rem;}
+.fs{background:var(--s2);border:0.5px solid var(--b);border-radius:12px;padding:1.25rem;display:flex;flex-direction:column;gap:.875rem;}
+.fst{font-size:11px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:6px;border-bottom:0.5px solid var(--b);padding-bottom:.5rem;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.dr{display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;align-items:end;margin-bottom:8px;}
+.df label{font-size:11px;color:var(--tm);display:block;margin-bottom:4px;}
+.df input,.df select{padding:6px 8px;border-radius:var(--r);border:0.5px solid var(--bs);background:var(--s1);color:var(--tp);font-size:12px;width:100%;}
+.bsg{background:transparent;border:0.5px solid var(--bs);border-radius:var(--r);padding:6px 10px;font-size:12px;color:var(--tm);cursor:pointer;display:inline-flex;align-items:center;gap:4px;}
+.bsg:hover{background:var(--s1);color:var(--tp);}
+.bdel{background:none;border:none;cursor:pointer;color:var(--tm);font-size:16px;padding:4px;border-radius:4px;}
+.bdel:hover{color:#E24B4A;background:#FCEBEB;}
+/* BIB */
+.buz{border:1.5px dashed var(--bs);border-radius:var(--r);padding:1.25rem;text-align:center;cursor:pointer;background:var(--s1);transition:all .15s;}
+.buz:hover,.buz.dv{border-color:var(--gl);background:var(--gp);}
+.buz i{font-size:24px;color:var(--tm);display:block;margin-bottom:6px;}
+.bul{font-size:13px;color:var(--ts);}
+.bus{font-size:11px;color:var(--tm);margin-top:3px;}
+.bdiv{text-align:center;font-size:11px;color:var(--tm);display:flex;align-items:center;gap:8px;}
+.bdiv::before,.bdiv::after{content:'';flex:1;height:.5px;background:var(--bs);}
+.bl{display:flex;flex-direction:column;gap:6px;}
+.bi{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r);border:0.5px solid var(--b);background:var(--s1);}
+.bic{color:var(--tm);font-size:16px;flex-shrink:0;}
+.bin{flex:1;font-size:12px;font-weight:500;color:var(--tp);}
+.bit{font-size:10px;color:var(--tm);}
+.bpr{font-size:11px;color:var(--gl);display:flex;align-items:center;gap:5px;padding:6px 0;}
+/* AGENTE */
+.ao{display:flex;flex-direction:column;gap:6px;}
+.aopt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--r);border:0.5px solid var(--b);cursor:pointer;background:var(--s1);}
+.aopt.on{border-color:var(--gl);background:var(--gp);}
+.aopt input{margin-top:2px;accent-color:var(--gm);}
+.aon{font-size:12px;font-weight:500;color:var(--tp);}
+.aod{font-size:11px;color:var(--tm);margin-top:2px;}
+.cl{display:flex;flex-direction:column;gap:6px;}
+.ch{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r);border:0.5px solid var(--b);background:var(--s1);cursor:pointer;}
+.ch.on{border-color:var(--gl);background:var(--gp);}
+.cav{width:28px;height:28px;border-radius:50%;background:var(--gm);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+.chna{font-size:12px;font-weight:500;color:var(--tp);}
+.chr{font-size:11px;color:var(--tm);}
+.bla{background:var(--gm);color:#fff;border:none;border-radius:var(--r);padding:10px 18px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.bla:hover{background:var(--gd);}
+/* ALUMNO */
+#pa{flex:1;display:flex;overflow:hidden;}
+.cip{width:300px;min-width:300px;border-right:0.5px solid var(--b);background:var(--s1);overflow-y:auto;display:flex;flex-direction:column;}
+.cs{padding:1rem;border-bottom:0.5px solid var(--b);}
+.cs:last-child{border-bottom:none;}
+.clbl{font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;display:flex;align-items:center;gap:5px;}
+.cnar{font-size:13px;color:var(--tp);line-height:1.65;}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.dc{background:var(--s2);border-radius:var(--r);padding:7px 10px;border:0.5px solid var(--b);}
+.dcl{font-size:10px;color:var(--tm);margin-bottom:2px;}
+.dcv{font-size:14px;font-weight:500;color:var(--tp);}
+.dcv.al{color:#A32D2D;}
+.dcv.ok{color:var(--gm);}
+.rl{display:flex;flex-direction:column;gap:5px;}
+.ri{display:flex;align-items:flex-start;gap:7px;padding:7px 9px;border-radius:var(--r);border:0.5px solid var(--b);background:var(--s2);}
+.ric{color:var(--gm);font-size:13px;flex-shrink:0;margin-top:1px;}
+.rin{font-size:11px;font-weight:500;color:var(--tp);line-height:1.3;}
+.rim{font-size:10px;color:var(--tm);margin-top:1px;}
+/* CHAT */
+.ca{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+.ctbar{padding:.75rem 1.25rem;border-bottom:0.5px solid var(--b);background:var(--s2);display:flex;align-items:center;gap:10px;}
+.aav{width:32px;height:32px;border-radius:50%;background:var(--gm);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+.ain{font-size:13px;font-weight:500;}
+.air{font-size:11px;color:var(--tm);}
+.odot{width:7px;height:7px;border-radius:50%;background:var(--gl);margin-left:auto;}
+.cm{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;}
+.msg{display:flex;gap:8px;}
+.msg.u{flex-direction:row-reverse;}
+.mav{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;}
+.mav.a{background:var(--gm);color:#fff;}
+.mav.u{background:var(--gp);color:var(--gm);border:0.5px solid var(--gb);}
+.mc{max-width:78%;}
+.mm{font-size:10px;color:var(--tm);margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.msg.u .mm{justify-content:flex-end;}
+.rp{padding:1px 6px;border-radius:4px;background:var(--gp);color:var(--gm);border:0.5px solid var(--gb);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+.bbl{padding:.65rem .875rem;border-radius:12px;font-size:13px;line-height:1.65;white-space:pre-wrap;}
+.bbl.a{background:var(--s2);color:var(--tp);border:0.5px solid var(--b);border-top-left-radius:4px;}
+.bbl.u{background:var(--gp);color:var(--tp);border:0.5px solid var(--gb);border-top-right-radius:4px;}
+.ty{display:flex;align-items:center;gap:4px;padding:.65rem .875rem;background:var(--s2);border:0.5px solid var(--b);border-radius:12px;border-top-left-radius:4px;width:fit-content;}
+.tyd{width:6px;height:6px;border-radius:50%;background:var(--tm);animation:bo 1.2s infinite;}
+.tyd:nth-child(2){animation-delay:.2s;}
+.tyd:nth-child(3){animation-delay:.4s;}
+@keyframes bo{0%,80%,100%{transform:translateY(0);opacity:.5;}40%{transform:translateY(-5px);opacity:1;}}
+.ciz{padding:.875rem 1.25rem;border-top:0.5px solid var(--b);background:var(--s2);}
+.cn{font-size:11px;color:var(--tm);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.ir{display:flex;gap:8px;align-items:flex-end;}
+.cinp{flex:1;resize:none;border-radius:var(--r);border:0.5px solid var(--bs);background:var(--s1);color:var(--tp);padding:8px 10px;font-size:13px;font-family:inherit;line-height:1.5;min-height:38px;max-height:120px;}
+.cinp:focus{outline:none;border-color:var(--gl);}
+.cinp::placeholder{color:var(--tm);}
+.sb2{width:36px;height:36px;border-radius:var(--r);background:var(--gm);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex-shrink:0;}
+.sb2:hover{background:var(--gd);}
+.sb2:disabled{background:var(--bs);cursor:not-allowed;}
+/* EMPTY */
+.es{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;color:var(--tm);text-align:center;padding:2rem;}
+.es i{font-size:32px;opacity:.4;}
+.es p{font-size:13px;max-width:240px;line-height:1.5;}
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;}
+.mo.on{display:flex;}
+.mdl{background:var(--s2);border-radius:16px;border:0.5px solid var(--bs);padding:1.5rem;width:90%;max-width:460px;display:flex;flex-direction:column;gap:1rem;}
+.mtt{font-size:15px;font-weight:500;}
+.mts{font-size:12px;color:var(--tm);margin-top:2px;}
+.ma{display:flex;gap:8px;justify-content:flex-end;margin-top:.25rem;}
+.bsm{padding:7px 14px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;border:none;}
+.bsm.p{background:var(--gm);color:#fff;}
+.bsm.p:hover{background:var(--gd);}
+.bsm.g{background:transparent;color:var(--ts);border:0.5px solid var(--bs);}
+.bsm.g:hover{background:var(--s1);}
+/* TOAST */
+.tst{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--tp);color:var(--s2);padding:8px 16px;border-radius:var(--r);font-size:12px;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;}
+.tst.on{opacity:1;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bs);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="sl" class="scr on">
+  <div class="lcard">
+    <div class="llogo">
+      <div class="lico">🔬</div>
+      <div><div class="ltxt">Detectives Ambientales</div><div class="lsub">Plataforma de pensamiento crítico</div></div>
+    </div>
+    <div class="fi"><label>Tu nombre</label><input type="text" id="lname" placeholder="Ej: María García"></div>
+    <div class="fi"><label>Ingresás como</label>
+      <select id="lrole">
+        <option value="alumno">Alumno/a</option>
+        <option value="docente">Docente</option>
+      </select>
+    </div>
+    <div class="fi" id="akf" style="display:none;">
+      <label>API Key de Google Gemini <span style="color:var(--tm);font-weight:400;">(solo docente)</span></label>
+      <input type="password" id="lakey" placeholder="AIza...">
+    </div>
+    <button class="bp" onclick="doLogin()"><i class="ti ti-arrow-right"></i> Ingresar</button>
+    <div class="lnote"><i class="ti ti-lock" style="font-size:12px;vertical-align:-2px;"></i> Esta plataforma solo trabaja con la bibliografía cargada por el docente. No busca información en internet.</div>
+    <div class="lhint" id="ghint" style="display:none;">Obtené tu API key gratuita en <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="sm" class="scr">
+  <div class="sb">
+    <div class="sbh">
+      <div class="logo"><div class="lico2">🔬</div><div><div class="ln">Detectives Ambientales</div><div class="lr" id="sulbl">—</div></div></div>
+      <div class="mtabs" id="mtabs" style="display:none;">
+        <button class="mtab on" id="ta" onclick="switchMode('alumno')"><i class="ti ti-user"></i> Alumno</button>
+        <button class="mtab" id="td" onclick="switchMode('docente')"><i class="ti ti-settings"></i> Docente</button>
+      </div>
+    </div>
+    <div class="sbs"><div class="slbl">Casos disponibles</div><div id="clist"></div>
+      <button class="badd" id="badd" style="display:none;" onclick="openNM()"><i class="ti ti-plus"></i> Agregar caso</button>
+    </div>
+    <div class="sbf"><i class="ti ti-lock"></i> Solo bibliografía cargada · Sin búsqueda web</div>
+  </div>
+
+  <!-- DOCENTE -->
+  <div id="pd" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+    <div class="tbar">
+      <div><div class="tt" id="dpt">Configurar caso</div><div class="ts2">Editá la situación, los datos y la bibliografía</div></div>
+      <button class="bla" onclick="launchCase()"><i class="ti ti-rocket"></i> Publicar caso</button>
+    </div>
+    <div class="pb">
+      <div class="fs">
+        <div class="fst"><i class="ti ti-file-description"></i> Información del caso</div>
+        <div class="fi"><label>Título</label><input type="text" id="ctit" placeholder="Ej: Contaminación por plaguicidas en río Suquía"></div>
+        <div class="fr">
+          <div class="fi"><label>Asignatura</label><input type="text" id="csub" placeholder="Ej: Ecotoxicología"></div>
+          <div class="fi"><label>Dificultad</label><select id="cdif"><option value="inicial">Inicial</option><option value="intermedio" selected>Intermedio</option><option value="avanzado">Avanzado</option></select></div>
+        </div>
+        <div class="fi"><label>Narrativa del caso</label><textarea id="cnar" rows="5" placeholder="Describí el contexto del problema ambiental..."></textarea></div>
+      </div>
+      <div class="fs">
+        <div class="fst"><i class="ti ti-chart-bar"></i> Datos disponibles para el alumno</div>
+        <div id="dfc"></div>
+        <button class="bsg" onclick="addDF()"><i class="ti ti-plus"></i> Agregar dato</button>
+      </div>
+      <div class="fs">
+        <div class="fst"><i class="ti ti-books"></i> Bibliografía de referencia</div>
+        <div class="buz" id="dz" onclick="document.getElementById('pfi').click()" ondragover="dov(event)" ondragleave="dlv()" ondrop="ddr(event)">
+          <i class="ti ti-file-upload"></i>
+          <div class="bul">Arrastrá PDFs aquí o hacé clic para seleccionar</div>
+          <div class="bus">El texto se extrae automáticamente</div>
+        </div>
+        <input type="file" id="pfi" accept=".pdf" multiple onchange="hpu(event)" style="display:none;">
+        <div class="bdiv">o agregá texto manualmente</div>
+        <div class="fi"><label>Título / referencia</label><input type="text" id="bmt" placeholder="Ej: Bertrand et al., 2016"></div>
+        <div class="fi"><label>Texto / resumen</label><textarea id="bmx" rows="4" placeholder="Pegá aquí el contenido relevante..."></textarea></div>
+        <button class="bsg" onclick="addMB()"><i class="ti ti-plus"></i> Agregar a bibliografía</button>
+        <div id="bproc" class="bpr" style="display:none;"><i class="ti ti-loader-2"></i> Extrayendo texto del PDF...</div>
+        <div id="blist" class="bl"></div>
+      </div>
+      <div class="fs">
+        <div class="fst"><i class="ti ti-robot"></i> Configuración del agente</div>
+        <div class="fi"><label>Tipo de agente</label>
+          <div class="ao">
+            <label class="aopt on" id="os"><input type="checkbox" checked onchange="togO('s',this)"><div><div class="aon">Socrático</div><div class="aod">Solo pregunta, nunca responde directamente. Cada intercambio profundiza el análisis.</div></div></label>
+            <label class="aopt on" id="or"><input type="checkbox" checked onchange="togO('r',this)"><div><div class="aon">Desempeño de rol</div><div class="aod">El agente adopta una identidad profesional concreta durante toda la sesión.</div></div></label>
+          </div>
+        </div>
+        <div class="fi"><label>Personaje del agente</label>
+          <div class="cl" id="chlist">
+            <div class="ch on" data-c="mendez" onclick="selC(this)"><div class="cav">DM</div><div><div class="chna">Dr. Méndez</div><div class="chr">Dirección Provincial de Ambiente · Funcionario técnico</div></div></div>
+            <div class="ch" data-c="rios" onclick="selC(this)"><div class="cav">DR</div><div><div class="chna">Dra. Ríos</div><div class="chr">CONICET · Investigadora senior en ecotoxicología</div></div></div>
+            <div class="ch" data-c="gutierrez" onclick="selC(this)"><div class="cav">LG</div><div><div class="chna">Lic. Gutiérrez</div><div class="chr">Municipio · Técnico de control ambiental</div></div></div>
+          </div>
+        </div>
+        <div class="fi"><label>Instrucciones adicionales para el agente (opcional)</label><textarea id="aex" rows="3" placeholder="Nivel de dificultad, aspectos a enfatizar, instrucciones específicas..."></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALUMNO -->
+  <div id="pa" style="display:flex;flex:1;overflow:hidden;">
+    <div class="cip">
+      <div class="es" id="esc"><i class="ti ti-clipboard-text"></i><p>Seleccioná un caso de la lista para comenzar</p></div>
+      <div id="cic" style="display:none;">
+        <div class="cs"><div class="clbl"><i class="ti ti-file-description"></i> Situación</div><div class="cnar" id="vnar"></div></div>
+        <div class="cs" id="vds" style="display:none;"><div class="clbl"><i class="ti ti-chart-bar"></i> Datos disponibles</div><div class="dg" id="vdg"></div></div>
+        <div class="cs" id="vbs" style="display:none;"><div class="clbl"><i class="ti ti-books"></i> Bibliografía del caso</div><div class="rl" id="vrl"></div></div>
+      </div>
+    </div>
+    <div class="ca">
+      <div class="ctbar" id="ctb" style="display:none;">
+        <div class="aav" id="aavi">DM</div>
+        <div><div class="ain" id="adn">Dr. Méndez</div><div class="air" id="adr">Dirección Provincial de Ambiente</div></div>
+        <div class="odot"></div>
+      </div>
+      <div class="cm" id="cmsg">
+        <div class="es" id="ce"><i class="ti ti-message-2"></i><p>Seleccioná un caso para comenzar la interacción con el agente</p></div>
+      </div>
+      <div class="ciz" id="ciz" style="display:none;">
+        <div class="cn"><i class="ti ti-info-circle"></i> El agente no emite juicios de valor. Fundamentá tu razonamiento.</div>
+        <div class="ir"><textarea class="cinp" id="cinp" rows="1" placeholder="Escribí tu respuesta o razonamiento..."></textarea><button class="sb2" id="sbtn" onclick="sendMsg()"><i class="ti ti-arrow-up"></i></button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="mo" id="mnc">
+  <div class="mdl">
+    <div><div class="mtt">Nuevo caso</div><div class="mts">Creá el caso desde cero y configuralo desde el panel docente.</div></div>
+    <div class="fi"><label>Nombre del caso</label><input type="text" id="ncn" placeholder="Ej: Monitoreo de microplásticos en cuenca periurbana"></div>
+    <div class="ma"><button class="bsm g" onclick="closeM('mnc')">Cancelar</button><button class="bsm p" onclick="createNC()">Crear</button></div>
+  </div>
+</div>
+
+<div class="tst" id="tst"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const S={user:{name:'',role:'alumno'},apiKey:'',mode:'alumno',case:null,cases:[
+  {id:'c1',title:'Contaminación por plaguicidas organofosforados',subject:'Ecotoxicología',difficulty:'intermedio',
+   narrative:'Un municipio periurbano reporta mortandad de peces en el tramo medio del río Suquía. Análisis preliminares detectan actividad colinesterásica reducida en Palaemonetes argentinus. El organismo convocante solicita una evaluación ecotoxicológica y una propuesta de monitoreo.\n\nTu rol: profesional convocada a dictaminar sobre el origen del daño y proponer un plan de acción.',
+   data:[{label:'AChE — cefalotórax',value:'↓ 42%',status:'al'},{label:'AChE — abdomen',value:'↓ 38%',status:'al'},{label:'Supervivencia 96h',value:'61%',status:'al'},{label:'Sitio control',value:'Sin efecto',status:'ok'}],
+   bibliography:[
+     {title:'Bertrand et al., 2016 — Biomarcadores en P. argentinus',meta:'Aquatic Toxicology',type:'text',text:'Biomarcadores en Palaemonetes argentinus expuesto a clorpirifós (0, 3.5, 10.5, 31.5, 94.5 ng/L) durante 96h. Inhibición significativa de AChE en cefalotórax y abdomen en todos los tratamientos. Las metalotioneínas y alpha-tocoferol también respondieron. La AChE es el biomarcador más sensible para organofosforados en este organismo. Se sugieren efectos sobre comportamiento y poblaciones.'},
+     {title:'Cap. 13 — Principios de Ecotoxicología (UNLP, Carriquiriborde)',meta:'Bibliografía base del curso',type:'text',text:'Biomarcadores de exposición, efecto y susceptibilidad. Fase I: CYP1A, EROD. Fase II: GST, UDPGT. Proteínas HSP. Metalotioneínas. La inhibición de AChE es el biomarcador más difundido para plaguicidas organofosforados y carbamatos. Impiden degradación de acetilcolina en la sinapsis, causando efectos neurotóxicos.'},
+     {title:'Giorgi, Domínguez & Gómez 2021 — Monitoreo fluvial Argentina',meta:'Técnicas de monitoreo',type:'text',text:'Técnicas de monitoreo para ecosistemas fluviales de Argentina. Tipos de ríos según caudal y orden. Muestreo multihábitat para macroinvertebrados. Importancia de sitios control y réplicas. Índices de calidad de hábitat para región pampeana. Comunidades indicadoras: macroinvertebrados, perifiton, macrófitas.'}
+   ],
+   agent:{char:'mendez',socratic:true,roleplay:true,extraContext:''},chatHistory:[]}
+]};
+
+const CHARS={
+  mendez:{i:'DM',name:'Dr. Méndez',role:'Dirección Provincial de Ambiente',desc:'funcionario técnico de la Dirección Provincial de Ambiente de Córdoba, con 15 años de experiencia en evaluación de impacto ambiental'},
+  rios:{i:'DR',name:'Dra. Ríos',role:'CONICET · Ecotoxicología',desc:'investigadora senior del CONICET especializada en ecotoxicología acuática y biomarcadores en organismos fluviales'},
+  gutierrez:{i:'LG',name:'Lic. Gutiérrez',role:'Municipio · Control ambiental',desc:'técnico ambiental del municipio, responsable del control de efluentes y monitoreo de cuerpos de agua'}
+};
+
+// LOGIN
+document.getElementById('lrole').onchange=function(){
+  const d=this.value==='docente';
+  document.getElementById('akf').style.display=d?'flex':'none';
+  document.getElementById('ghint').style.display=d?'block':'none';
+};
+
+function doLogin(){
+  const n=document.getElementById('lname').value.trim();
+  const r=document.getElementById('lrole').value;
+  const k=document.getElementById('lakey').value.trim();
+  if(!n){toast('Ingresá tu nombre para continuar');return;}
+  if(r==='docente'&&!k){toast('El docente necesita la API key de Gemini');return;}
+  S.user={name:n,role:r};S.apiKey=k;
+  document.getElementById('sl').classList.remove('on');
+  document.getElementById('sm').classList.add('on');
+  document.getElementById('sulbl').textContent=n+' · '+(r==='docente'?'Docente':'Alumno/a');
+  if(r==='docente'){document.getElementById('mtabs').style.display='grid';document.getElementById('badd').style.display='flex';}
+  switchMode('alumno');renderCL();
+}
+
+// MODOS
+function switchMode(m){
+  S.mode=m;
+  document.getElementById('ta').classList.toggle('on',m==='alumno');
+  document.getElementById('td').classList.toggle('on',m==='docente');
+  document.getElementById('pd').style.display=m==='docente'?'flex':'none';
+  document.getElementById('pa').style.display=m==='docente'?'none':'flex';
+  if(m==='docente'&&S.case)loadDoc(S.case);
+}
+
+// CASOS
+function renderCL(){
+  const c=document.getElementById('clist');c.innerHTML='';
+  S.cases.forEach(x=>{
+    const d=document.createElement('div');
+    d.className='ci'+(S.case?.id===x.id?' on':'');
+    d.onclick=()=>selCase(x.id);
+    d.innerHTML=`<div class="cin">${x.title}</div><div class="cim"><span class="dot"></span>${x.subject||'Sin asignatura'} · ${x.difficulty}</div>`;
+    c.appendChild(d);
+  });
+}
+
+function selCase(id){
+  S.case=S.cases.find(x=>x.id===id);
+  if(!S.case)return;
+  renderCL();
+  if(S.mode==='docente')loadDoc(S.case);
+  else loadAlumno(S.case);
+}
+
+// ALUMNO
+function loadAlumno(c){
+  document.getElementById('esc').style.display='none';
+  document.getElementById('cic').style.display='block';
+  document.getElementById('ctb').style.display='flex';
+  document.getElementById('ciz').style.display='block';
+  document.getElementById('ce').style.display='none';
+  document.getElementById('vnar').textContent=c.narrative||'';
+  const dg=document.getElementById('vdg');dg.innerHTML='';
+  if(c.data?.length){
+    document.getElementById('vds').style.display='block';
+    c.data.forEach(d=>{const el=document.createElement('div');el.className='dc';el.innerHTML=`<div class="dcl">${d.label}</div><div class="dcv ${d.status}">${d.value}</div>`;dg.appendChild(el);});
+  }else document.getElementById('vds').style.display='none';
+  const rl=document.getElementById('vrl');rl.innerHTML='';
+  if(c.bibliography?.length){
+    document.getElementById('vbs').style.display='block';
+    c.bibliography.forEach(b=>{const el=document.createElement('div');el.className='ri';el.innerHTML=`<i class="ti ti-file-text ric"></i><div><div class="rin">${b.title}</div><div class="rim">${b.meta}</div></div>`;rl.appendChild(el);});
+  }else document.getElementById('vbs').style.display='none';
+  const ch=CHARS[c.agent?.char||'mendez'];
+  document.getElementById('aavi').textContent=ch.i;
+  document.getElementById('adn').textContent=ch.name;
+  document.getElementById('adr').textContent=ch.role;
+  renderHist(c);
+  if(!c.chatHistory?.length)openMsg(c);
+}
+
+function renderHist(c){
+  const cm=document.getElementById('cmsg');cm.innerHTML='';
+  (c.chatHistory||[]).forEach(m=>addBubble(m.role,m.content,c));
+}
+
+function addBubble(role,content,c){
+  const cm=document.getElementById('cmsg');
+  const ch=CHARS[c?.agent?.char||'mendez'];
+  const d=document.createElement('div');
+  d.className='msg'+(role==='user'?' u':'');
+  if(role==='user'){
+    d.innerHTML=`<div class="mav u">${S.user.name.charAt(0).toUpperCase()}</div><div class="mc"><div class="mm">${S.user.name}</div><div class="bbl u">${content}</div></div>`;
+  }else{
+    d.innerHTML=`<div class="mav a">${ch.i}</div><div class="mc"><div class="mm"><span class="rp">${ch.role}</span> ${ch.name}</div><div class="bbl a">${content}</div></div>`;
+  }
+  cm.appendChild(d);cm.scrollTop=cm.scrollHeight;
+}
+
+let tyEl=null;
+function showTy(c){
+  const cm=document.getElementById('cmsg');const ch=CHARS[c?.agent?.char||'mendez'];
+  tyEl=document.createElement('div');tyEl.className='msg';
+  tyEl.innerHTML=`<div class="mav a">${ch.i}</div><div class="ty"><div class="tyd"></div><div class="tyd"></div><div class="tyd"></div></div>`;
+  cm.appendChild(tyEl);cm.scrollTop=cm.scrollHeight;
+}
+function hideTy(){tyEl?.remove();tyEl=null;}
+
+// GEMINI
+function buildSP(c){
+  const ch=CHARS[c.agent?.char||'mendez'];
+  const bib=(c.bibliography||[]).map((b,i)=>`[Fuente ${i+1}: ${b.title}]\n${b.text}`).join('\n\n---\n\n');
+  const dat=(c.data||[]).map(d=>`${d.label}: ${d.value}`).join(', ');
+  const sr=c.agent?.socratic!==false?'REGLA SOCRÁTICA OBLIGATORIA: Nunca respondés directamente. Cada mensaje tuyo termina con UNA SOLA pregunta que profundiza el análisis. Sin excepciones.':'';
+  const rr=c.agent?.roleplay!==false?`REGLA DE ROL OBLIGATORIA: Sos ${ch.name}, ${ch.desc}. Mantené este rol siempre.`:'';
+  return `${rr}\n\n${sr}\n\nREGLA DE NO JUICIO OBLIGATORIA: Nunca emitís juicios de valor. No decís "muy bien", "correcto", "incorrecto" ni nada similar. No validás ni invalidás.\n\nREGLA BIBLIOGRÁFICA OBLIGATORIA: Solo razonás con las fuentes provistas. Si el alumno menciona algo fuera de ellas, lo señalás y redirigís. NUNCA inventás datos.\n\nCONTEXTO DEL CASO: ${c.narrative}\n\nDATOS DEL CASO: ${dat}\n\nBIBLIOGRAFÍA DISPONIBLE:\n${bib||'Sin bibliografía cargada.'}\n\n${c.agent?.extraContext?'INSTRUCCIONES DEL DOCENTE: '+c.agent.extraContext:''}\n\nRespondé en español rioplatense. Tono técnico-profesional. Máximo 4 oraciones + la pregunta final. Sin markdown.`;
+}
+
+async function callGemini(sp,hist,msg){
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite-preview-06-17:generateContent?key=${S.apiKey}`;
+  const contents=[];
+  // Gemini necesita que los turnos alternen user/model y que empiece con user
+  for(const h of hist){
+    if(h.role==='agent')contents.push({role:'model',parts:[{text:h.content}]});
+    else if(h.role==='user')contents.push({role:'user',parts:[{text:h.content}]});
+  }
+  if(msg)contents.push({role:'user',parts:[{text:msg}]});
+  // Si no hay contenido, agregar mensaje inicial
+  if(contents.length===0)contents.push({role:'user',parts:[{text:msg||'Iniciá la conversación.'}]});
+  const body={
+    system_instruction:{parts:[{text:sp}]},
+    contents,
+    generationConfig:{maxOutputTokens:600,temperature:0.7}
+  };
+  const res=await fetch(url,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!res.ok){
+    const err=await res.json().catch(()=>({}));
+    throw new Error(err?.error?.message||`HTTP ${res.status}`);
+  }
+  const data=await res.json();
+  if(data.error)throw new Error(data.error.message);
+  return data.candidates?.[0]?.content?.parts?.[0]?.text||'Sin respuesta.';
+}
+
+async function openMsg(c){
+  if(!S.apiKey){addBubble('agent','La plataforma necesita una API key de Gemini. El docente debe ingresar su clave al iniciar sesión.',c);return;}
+  showTy(c);document.getElementById('sbtn').disabled=true;
+  try{
+    const sp=buildSP(c);
+    const reply=await callGemini(sp,[],'(El alumno acaba de ingresar al caso. Presentate brevemente en tu rol y formulá la primera pregunta socrática para abrir el análisis. Máximo 3 oraciones + la pregunta.)');
+    hideTy();c.chatHistory=c.chatHistory||[];c.chatHistory.push({role:'agent',content:reply});addBubble('agent',reply,c);
+  }catch(e){hideTy();addBubble('agent',`Error: ${e.message}`,c);}
+  document.getElementById('sbtn').disabled=false;
+}
+
+async function sendMsg(){
+  const inp=document.getElementById('cinp');const txt=inp.value.trim();
+  if(!txt||!S.case)return;
+  if(!S.apiKey){toast('No hay API key configurada');return;}
+  const c=S.case;c.chatHistory=c.chatHistory||[];
+  c.chatHistory.push({role:'user',content:txt});addBubble('user',txt,c);
+  inp.value='';inp.style.height='auto';document.getElementById('sbtn').disabled=true;showTy(c);
+  try{
+    const sp=buildSP(c);const hist=c.chatHistory.slice(0,-1);
+    const reply=await callGemini(sp,hist,txt);
+    hideTy();c.chatHistory.push({role:'agent',content:reply});addBubble('agent',reply,c);
+  }catch(e){hideTy();addBubble('agent',`Error: ${e.message}. Verificá que la API key de Gemini sea correcta y que hayas habilitado la API en aistudio.google.com`,c);}
+  document.getElementById('sbtn').disabled=false;
+}
+
+// DOCENTE
+function loadDoc(c){
+  document.getElementById('dpt').textContent=c.title||'Configurar caso';
+  document.getElementById('ctit').value=c.title||'';
+  document.getElementById('csub').value=c.subject||'';
+  document.getElementById('cdif').value=c.difficulty||'intermedio';
+  document.getElementById('cnar').value=c.narrative||'';
+  document.getElementById('aex').value=c.agent?.extraContext||'';
+  document.querySelectorAll('.ch').forEach(el=>el.classList.toggle('on',el.dataset.c===(c.agent?.char||'mendez')));
+  renderBL(c.bibliography||[]);renderDF(c.data||[]);
+  ['s','r'].forEach(t=>{
+    const o=document.getElementById('o'+t);const chk=o?.querySelector('input');
+    const v=t==='s'?c.agent?.socratic!==false:c.agent?.roleplay!==false;
+    if(chk)chk.checked=v;o?.classList.toggle('on',v);
+  });
+}
+
+function renderDF(data){
+  const c=document.getElementById('dfc');c.innerHTML='';
+  (data.length?data:[{label:'',value:'',status:'normal'}]).forEach(d=>c.appendChild(mkDF(d.label,d.value,d.status)));
+}
+
+function mkDF(l='',v='',s='normal'){
+  const d=document.createElement('div');d.className='dr';
+  d.innerHTML=`<div class="df"><label>Variable</label><input type="text" class="dfl" value="${l}" placeholder="Ej: AChE — tejido"></div><div class="df"><label>Valor</label><input type="text" class="dfv" value="${v}" placeholder="Ej: ↓ 42%"></div><div class="df"><label>Estado</label><select class="dfs"><option value="normal" ${s==='normal'?'selected':''}>Normal</option><option value="al" ${s==='al'?'selected':''}>Alerta</option><option value="ok" ${s==='ok'?'selected':''}>OK</option></select></div><div class="df" style="padding-top:18px;"><button class="bdel" onclick="this.closest('.dr').remove()"><i class="ti ti-trash"></i></button></div>`;
+  return d;
+}
+function addDF(){document.getElementById('dfc').appendChild(mkDF());}
+
+function renderBL(bib){
+  const l=document.getElementById('blist');l.innerHTML='';
+  bib.forEach((b,i)=>{const el=document.createElement('div');el.className='bi';el.innerHTML=`<i class="ti ${b.type==='pdf'?'ti-file-type-pdf':'ti-text-size'} bic"></i><div class="bin">${b.title}</div><div class="bit">${b.type==='pdf'?'PDF':'Texto'}</div><button class="bdel" onclick="rmB(${i})"><i class="ti ti-x"></i></button>`;l.appendChild(el);});
+}
+function rmB(i){S.case.bibliography.splice(i,1);renderBL(S.case.bibliography);toast('Referencia eliminada');}
+
+function addMB(){
+  const t=document.getElementById('bmt').value.trim();const x=document.getElementById('bmx').value.trim();
+  if(!t||!x){toast('Completá el título y el texto');return;}
+  if(!S.case){toast('Seleccioná un caso primero');return;}
+  S.case.bibliography=S.case.bibliography||[];
+  S.case.bibliography.push({title:t,meta:'Cargado manualmente',type:'text',text:x});
+  renderBL(S.case.bibliography);
+  document.getElementById('bmt').value='';document.getElementById('bmx').value='';
+  toast('Texto agregado a bibliografía');
+}
+
+function dov(e){e.preventDefault();document.getElementById('dz').classList.add('dv');}
+function dlv(){document.getElementById('dz').classList.remove('dv');}
+function ddr(e){e.preventDefault();dlv();const f=Array.from(e.dataTransfer.files).filter(f=>f.type==='application/pdf');if(f.length)procPDF(f);}
+function hpu(e){const f=Array.from(e.target.files);if(f.length)procPDF(f);e.target.value='';}
+
+async function procPDF(files){
+  if(!S.case){toast('Seleccioná un caso primero');return;}
+  document.getElementById('bproc').style.display='flex';
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  for(const file of files){
+    try{
+      const ab=await file.arrayBuffer();const pdf=await pdfjsLib.getDocument({data:ab}).promise;
+      let txt='';
+      for(let i=1;i<=Math.min(pdf.numPages,25);i++){const pg=await pdf.getPage(i);const ct=await pg.getTextContent();txt+=ct.items.map(it=>it.str).join(' ')+'\n';}
+      txt=txt.replace(/\s+/g,' ').trim();
+      S.case.bibliography.push({title:file.name.replace('.pdf',''),meta:`PDF · ${pdf.numPages} páginas`,type:'pdf',text:txt.substring(0,15000)});
+      renderBL(S.case.bibliography);toast(`"${file.name}" procesado`);
+    }catch(e){toast(`Error al procesar "${file.name}"`);}
+  }
+  document.getElementById('bproc').style.display='none';
+}
+
+function selC(el){
+  document.querySelectorAll('.ch').forEach(c=>c.classList.remove('on'));el.classList.add('on');
+  if(S.case){S.case.agent=S.case.agent||{};S.case.agent.char=el.dataset.c;}
+}
+function togO(t,chk){
+  document.getElementById('o'+t).classList.toggle('on',chk.checked);
+  if(S.case){S.case.agent=S.case.agent||{};if(t==='s')S.case.agent.socratic=chk.checked;else S.case.agent.roleplay=chk.checked;}
+}
+
+function launchCase(){
+  if(!S.case){toast('Seleccioná un caso primero');return;}
+  const c=S.case;
+  c.title=document.getElementById('ctit').value.trim()||c.title;
+  c.subject=document.getElementById('csub').value.trim();
+  c.difficulty=document.getElementById('cdif').value;
+  c.narrative=document.getElementById('cnar').value.trim();
+  c.agent=c.agent||{};c.agent.extraContext=document.getElementById('aex').value.trim();
+  c.data=[];
+  document.querySelectorAll('#dfc .dr').forEach(row=>{
+    const l=row.querySelector('.dfl')?.value.trim();const v=row.querySelector('.dfv')?.value.trim();const s=row.querySelector('.dfs')?.value;
+    if(l&&v)c.data.push({label:l,value:v,status:s});
+  });
+  c.chatHistory=[];renderCL();toast('Caso publicado. Los alumnos pueden acceder.');
+  switchMode('alumno');selCase(c.id);
+}
+
+// MODAL
+function openNM(){document.getElementById('ncn').value='';document.getElementById('mnc').classList.add('on');}
+function closeM(id){document.getElementById(id).classList.remove('on');}
+function createNC(){
+  const n=document.getElementById('ncn').value.trim();if(!n){toast('Ingresá un nombre');return;}
+  const nc={id:'c'+Date.now(),title:n,subject:'',difficulty:'intermedio',narrative:'',data:[],bibliography:[],agent:{char:'mendez',socratic:true,roleplay:true,extraContext:''},chatHistory:[]};
+  S.cases.push(nc);closeM('mnc');renderCL();selCase(nc.id);switchMode('docente');toast('Caso creado. Configuralo antes de publicar.');
+}
+
+// UTILS
+function toast(msg){const t=document.getElementById('tst');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500);}
+document.getElementById('cinp')?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+document.getElementById('cinp')?.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
+</script>
+</body>
+</html>
